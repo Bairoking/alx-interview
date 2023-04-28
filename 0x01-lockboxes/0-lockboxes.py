@@ -1,31 +1,15 @@
 #!/usr/bin/python3
+"""lockbox challenge"""
 
 
 def canUnlockAll(boxes):
-    """
-    Determines if all boxes can be opened or not.
-
-    Args:
-        boxes (list of lists): List of boxes, where each box is a list of keys.
-
-    Returns:
-        bool: True if all boxes can be opened, False otherwise.
-    """
-    if not isinstance(boxes, list) or len(boxes) == 0:
-        return False
-
-    # Keep track of the boxes that have been opened
-    opened_boxes = {0}  # The first box is already opened by default
-
-    # Use a set to keep track of keys to be checked
-    keys_to_check = set(boxes[0])
-
-    # Process keys in the set until it's empty
+    """method that determines if all the boxes can be opened."""
+    open_boxes = len(boxes)
+    unlocked_boxes = set([0])   # starts with the first box unlocked
+    keys_to_check = set(boxes[0])   # collects keys from the first box
     while keys_to_check:
         key = keys_to_check.pop()
-        if key not in opened_boxes:
-            opened_boxes.add(key)
+        if key < open_boxes and key not in unlocked_boxes:
+            unlocked_boxes.add(key)
             keys_to_check.update(boxes[key])
-
-    # Check if all boxes have been opened
-    return len(opened_boxes) == len(boxes)
+    return len(unlocked_boxes) == open_boxes
