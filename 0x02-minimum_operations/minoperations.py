@@ -1,60 +1,37 @@
 #!/usr/bin/python3
-'''Minimum Operations python3 challenge'''
+"""Minimum Operations"""
 
 
 def minOperations(n):
-    '''calculates the fewest number of
-    operations needed to result in exactly n H
-    characters in this file.
+    """
+    Calculates the fewest number of operations needed to get n H characters
+given a text file with a single character H and two operations:
+Copy All and Paste.
+
+    Args:
+        n (int): The desired number of H characters.
+
     Returns:
-        Integer : if n is impossible to achieve, return 0
-    '''
-    pasted_chars = 1  # how many chars in the file
-    clipboard = 0  # how many H's copied
-    counter = 0  # operations counter
-
-    while pasted_chars < n:
-        # if did not copy anything yet
-        if clipboard == 0:
-            # copyall
-            clipboard = pasted_chars
-            # increment operations counter
-            counter += 1
-
-        # if haven't pasted anything yet
-        if pasted_chars == 1:
-            # paste
-            pasted_chars += clipboard
-            # increment operations counter
-            counter += 1
-            # continue to next loop
-            continue
-
-        remaining = n - pasted_chars  # remaining chars to Paste
-        # check if impossible by checking if clipboard
-        # has more than needed to reach the number desired
-        # which also means num of chars in file is equal
-        # or more than in the clipboard.
-        # in both situations it's impossible to achieve n of chars
-        if remaining < clipboard:
-            return 0
-
-        # if can't be devided
-        if remaining % pasted_chars != 0:
-            # paste current clipboard
-            pasted_chars += clipboard
-            # increment operations counter
-            counter += 1
-        else:
-            # copyall
-            clipboard = pasted_chars
-            # paste
-            pasted_chars += clipboard
-            # increment operations counter
-            counter += 2
-
-    # if got the desired result
-    if pasted_chars == n:
-        return counter
-    else:
+        int: The fewest number of operations needed to get n H characters.
+Returns 0 if n is not possible to achieve.
+    """
+    if n <= 1:
         return 0
+
+    factors = []
+    for i in range(2, n + 1):
+        while n % i == 0:
+            factors.append(i)
+            n //= i
+        if n == 1:
+            break
+
+    if not factors:
+        return 0
+
+    return sum(factors)
+
+
+if __name__ == '__main__':
+    n = 9
+    print(minOperations(n))
